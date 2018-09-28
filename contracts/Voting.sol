@@ -1,9 +1,11 @@
 pragma solidity ^0.4.11;
 
 import "./EthPolynomialCurvedToken.sol";
+import "./LockableToken.sol";
 
 
-contract Voting is EthPolynomialCurvedToken {
+//Not sure why it needs to be both EthPolynomialCurvedToken and LockableToken, since EthPolynomialCurvedToken is already LockableToken
+contract Voting is EthPolynomialCurvedToken, LockableToken {
 
     //model proposal
     struct Proposal {
@@ -35,7 +37,7 @@ contract Voting is EthPolynomialCurvedToken {
         //could also be variable token amount 
         //function vote (uint _proposalId, uint _token) public {
 
-        // do allowance, so that _token can be locked up
+        lock(0x123456, 10, 100);
 
         // record that account has voted
         voters[msg.sender] = true;

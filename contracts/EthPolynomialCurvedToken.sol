@@ -8,12 +8,12 @@ import "./EthBondingCurvedToken.sol";
 contract EthPolynomialCurvedToken is EthBondingCurvedToken {
 
     // uint256 constant private PRECISION = 10000000000;
-    string public name;
-    string public symbol;
-    uint8 public exponent;
-    uint32 public slope;
+    string public name = "Achill-Arena-Token";
+    string public symbol = "ACH";
+    uint8 public exponent = 2;
+    uint32 public slope = 1;
     uint8 public decimals = 18;
-    bool initalized = false;
+    // bool initalized = false;
 
     // @dev constructor        Initializes the bonding curve
     // constructor() public {
@@ -28,23 +28,23 @@ contract EthPolynomialCurvedToken is EthBondingCurvedToken {
     // @param _hash             digest produced by hashing content using hash function
     // @param _hashFunction     code for the hash function used
     // @param _size             length of the digest
-    function initContract(
-        string _name,
-        uint8 _decimals,
-        string _symbol,
-        uint8 _exponent,
-        uint32 _slope
-    ) public payable {
-        require(!initalized);
-        // extra precautions
-        require(poolBalance == 0 && totalSupply_ == 0);
-        initalized = false;
-        name = _name;
-        decimals = _decimals;
-        symbol = _symbol;
-        exponent = _exponent;
-        slope = _slope;
-    }
+    // function initContract(
+    //     string _name,
+    //     uint8 _decimals,
+    //     string _symbol,
+    //     uint8 _exponent,
+    //     uint32 _slope
+    // ) public payable {
+    //     require(!initalized);
+    //     // extra precautions
+    //     require(poolBalance == 0 && totalSupply_ == 0);
+    //     initalized = false;
+    //     name = _name;
+    //     decimals = _decimals;
+    //     symbol = _symbol;
+    //     exponent = _exponent;
+    //     slope = _slope;
+    // }
 
     /// @dev        Calculate the integral from 0 to t
     /// @param t    The number to integrate to

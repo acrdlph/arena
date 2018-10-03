@@ -26,6 +26,10 @@ class App extends Component {
     voting: false,
     hasVoted: false,
     totalSupply: null,
+    poolBalance: null,
+    exponent: null,
+    invSlope: null,
+    currentPrice: null,
     marketCap: null,
     tokenPurchaseAmount: null,
     price: null,
@@ -108,11 +112,21 @@ class App extends Component {
     const { contract } = this.state;
     const totalSupplyBN = await contract.totalSupply();
     const totalSupply = (parseInt(totalSupplyBN) / 10 ** 18).toFixed(3);
+    const poolBalanceBN = await contract.poolBalance();
+    const poolBalance = (parseInt(poolBalanceBN) / 10 ** 18).toFixed(3);
     const tokenBalanceBN = await contract.balanceOf(this.state.account);
-    const tokenBalance = (parseInt(tokenBalanceBN) / 10 ** 18).toFixed(20);
+    const tokenBalance = (parseInt(tokenBalanceBN) / 10 ** 18).toFixed(3);
+    const invSlope = await contract.invSlope();
+    const exponent = await contract.exponent();
+    const currentPrice = Math.floor((1 / invSlope) * (totalSupply ** exponent)*100)/100;
+    
     this.setState({
       totalSupply: totalSupply,
-      tokenBalance: tokenBalance
+      tokenBalance: tokenBalance,
+      currentPrice: currentPrice,
+      poolBalance: poolBalance,
+      invSlope: invSlope,
+      exponent: exponent
     })
   }
 
@@ -135,7 +149,7 @@ class App extends Component {
   }
 
   amountChangeHandler = (event) => {
-    const tokenAmountDec = event.target.value * (10**18);
+    const tokenAmountDec = event.target.value * (10 ** 18);
     this.setState({ tokenPurchaseAmount: tokenAmountDec });
   }
 
@@ -143,10 +157,10 @@ class App extends Component {
     const { contract } = this.state;
     const rewardBN = await contract.rewardForBurn.call(this.state.tokenPurchaseAmount);
     const priceBN = await contract.priceToMint.call(this.state.tokenPurchaseAmount);
-    this.setState({ reward: rewardBN.toNumber()/10**18, price: priceBN.toNumber()/10**18 });
+    this.setState({ reward: rewardBN.toNumber() / 10 ** 18, price: priceBN.toNumber() / 10 ** 18 });
 
-  } 
-  
+  }
+
 
   proposalChangedHandler = (event) => {
     this.setState({ newProposal: event.target.value })
@@ -168,9 +182,14 @@ class App extends Component {
           castVote={this.castVote} />
 
         <p> Your account: {this.state.account}</p>
-        <p> Your ACH token balance: {this.state.tokenBalance} </p>
+        <p> Your token balance: {this.state.tokenBalance} ACH</p>
 
-        <BondedToken supply={this.state.totalSupply} buy={this.buyToken} sell={this.sellToken} change={this.amountChangeHandler} />
+        <BondedToken
+          supply={this.state.totalSupply}
+          buy={this.buyToken}
+          sell={this.sellToken}
+          change={this.amountChangeHandler}
+          curveData={this.state} />
         <p><small> Contract address: {this.state.contractAddress}</small></p>
 
       </div>

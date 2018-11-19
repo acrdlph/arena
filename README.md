@@ -16,8 +16,7 @@ Content producers who are not yet influential can monetize future expected influ
 
 ## Credits
 
-This MVP was inspired by Simon de la Rouviere and conceptualized by Achill Rudolph. The first proof of concept was developed at ETHBerlin by Achill Rudolph, Bettina, [insert names]. The code for this MVP was written entirely by Achill Rudolph.
-
+This MVP was inspired by the work of Simon de la Rouviere, Billy Rennekamp and Slava Balasanov. The code for the bonding curve component is taken from https://github.com/relevant-community/memelordz-frontend.
 
 
 
